@@ -12,8 +12,8 @@ This programm is build for for an ESP8265/ESP8266 to communicate with the open s
 
 ## Intro
 
-The programm is omptimized for an ESP8265 controller but the performance should be the same on a ESP8266.
-I made it modular for the usage with serial output or/and a display. 
+The programm is optimized for an ESP8265 controller but the performance should be the same on a ESP8266.
+I made it modular for the usage with/without serial output or/and a display. 
 The platformio.ini file includes settings for you environment like board type, debug (for WiFiManager and HTTPClient) and board speed.
 In the main.ccp you can set the debug for the programm or enable/disable display.
 
