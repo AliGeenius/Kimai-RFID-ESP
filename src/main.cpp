@@ -7,7 +7,7 @@
 void setup()
 {
   pinMode(STAT_LED, OUTPUT);
-  ticker.attach(0.6, tick);
+  ticker.start();
 
 #if OLED_DISP
   displayInit();
@@ -40,6 +40,8 @@ void setup()
 void loop()
 {
   yield(); // give background processes time to work (eg WiFi stack)
+  ticker.update();
+  wifiTicker.update();
 #if OLED_DISP
   int remainingTimeBudget = ui.update(); // refresh display frame
   if (remainingTimeBudget > 0)
@@ -67,9 +69,9 @@ void loop()
   }
 #endif
   // Stop the blinking status light -> we just go here after 4-6 when timer < millis()
-  if (ticker.active())
+  if (ticker.state() == RUNNING)
   {
-    ticker.detach();
+    ticker.stop();
     SPI.begin();
     mfrc522.PCD_Init();
     //mfrc522.PCD_AntennaOn();
@@ -166,7 +168,7 @@ void loop()
       Serial.println(d_duration);
 #endif
     }
-    ticker.attach(0.8, tick);
+    ticker.interval(800);
 #if OLED_DISP
     ui.transitionToFrame(1);
 #endif
@@ -178,7 +180,7 @@ void loop()
     d_user = doc["message"].as<String>();
     Serial.println("\nError: " + d_user);
 #endif
-    ticker.attach(0.5, tick);
+    ticker.interval(500);
 #if OLED_DISP
     ui.transitionToFrame(2);
 #endif
@@ -191,7 +193,7 @@ void loop()
 #endif
     http.end();
     client.stop();
-    ticker.attach(0.1, tick);
+    ticker.interval(100);
     delay(4000);
     ESP.restart();
     break;
@@ -284,7 +286,7 @@ void wifiManInit()
     delay(5000);
   }
 
-  ticker.detach();
+  ticker.stop();
 
   strcpy(kimai_server, custom_kimai_server.getValue());
   strcpy(kimai_port, custom_kimai_port.getValue());
@@ -413,7 +415,7 @@ void uiInit()
   display.flipScreenVertically();
 
   // Refresh WiFi signal strength every 5 seconds
-  wifiTicker.attach(5, sigRefresh);
+  wifiTicker.start();
 
   // init timeclient for clock
   timeClient.begin();

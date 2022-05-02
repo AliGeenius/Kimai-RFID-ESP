@@ -9,8 +9,10 @@
 #include <SPI.h>
 #include <Ticker.h>
 #include <WiFiManager.h>
-#include <brzo_i2c.h>
-#include <SSD1306Brzo.h>
+//#include <brzo_i2c.h>
+//#include <SSD1306Brzo.h>
+#include <Wire.h>
+#include "SSD1306Wire.h"
 #include <WiFiUdp.h>
 #include <NTPClient.h>
 #include <OLEDDisplayUi.h>
@@ -60,9 +62,9 @@ void sigRefresh();
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
-SSD1306Brzo display(0x3c, 4, 5);
+SSD1306Wire display(0x3c, 4, 5);
 OLEDDisplayUi ui(&display);
-Ticker wifiTicker;
+Ticker wifiTicker(sigRefresh, 5000, 0, MILLIS);
 uint8_t sigStrength = 0;
 
 OverlayCallback overlays[] = {printTopline};
@@ -108,6 +110,6 @@ uint16_t port = 80;
 DynamicJsonDocument doc(512);
 
 // Status
-Ticker ticker;
-unsigned long timer = 0; // used for blocking the reader
 void tick();
+Ticker ticker(tick, 600, 0, MILLIS);
+unsigned long timer = 0; // used for blocking the reader
