@@ -111,7 +111,7 @@ void loop()
   WiFiClient client;
   HTTPClient http;
   String request = uri + remoteID;
-  http.begin(client, "192.168.178.200", port, request, false);
+  http.begin(client, kimai_server, port, request, false);
 
   // http.setReuse(true);
   http.useHTTP10(true); // Stream only useable on HTTP1.0 but no keep-alive
