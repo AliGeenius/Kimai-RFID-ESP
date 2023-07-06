@@ -8,7 +8,7 @@ This programm is build for for an ESP8265/ESP8266 to communicate with the open s
 + OLED display support
 + NTP Client for current time
 
-[Little video preview](https://cloud.aligeenius.de/s/RLkSndS8BSYRxQW)
+[Little video preview](https://cloud.aligeenius.de/s/LSnmYcD4LPyCDHn)
 
 ## Intro
 
